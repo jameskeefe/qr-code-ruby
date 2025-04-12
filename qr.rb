@@ -2,18 +2,6 @@
 require "rqrcode"
 require "pry-byebug"
 
-puts "What kind of QR code would you like to generate?"
-puts
-puts "1. Open a URL"
-puts "2. Join a wifi network"
-puts "3. Send a text message"
-puts
-puts "Press 4 to exit"
-puts
-
-kind_of_code = gets.chomp
-puts
-
 
 def qrcode(encode_text)
   # encode the text in a QR code
@@ -41,14 +29,34 @@ def qrcode(encode_text)
   return
 end
 
+puts "What kind of QR code would you like to generate?"
+puts
+puts "1. Open a URL"
+puts "2. Join a wifi network"
+puts "3. Send a text message"
+puts
+puts "Press 4 to exit"
+puts
+
+kind_of_code = gets.chomp
+puts
+
 # Option 1: URL
 if kind_of_code=="1"
-  puts "What URL would oyu like to encode in a QR?"
+  puts "What URL would you like to encode in a QR code?"
   puts
   url_name = gets.chomp
 
-
-
+  # It's 2025. We only use https
+  if url_name.include?("http://")
+    url_name.gsub("http:","https:")
+  end
+  # Need to add https to the url :)
+  if !url_name.include?("https://")
+    url_name = "https://" + url_name
+  end
+  
+  qrcode(url_name)
 
 # Make a WiFi network QR code
 elsif kind_of_code=="2"
@@ -88,8 +96,7 @@ elsif kind_of_code=="3"
   # save the QR code
   qrcode(encode_text)
 
-  #debugger
-
+# Exit
 elsif kind_of_code=="4"
   pp "Understood. Please come back again soon!"
 
@@ -97,5 +104,8 @@ else
   puts "Invalid input. Please try again."
 
 end 
+
+puts "What else can I do for you?"
+puts
 
 pp "End of file. Exiting... "
