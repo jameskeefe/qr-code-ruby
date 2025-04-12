@@ -29,83 +29,92 @@ def qrcode(encode_text)
   return
 end
 
-puts "What kind of QR code would you like to generate?"
-puts
-puts "1. Open a URL"
-puts "2. Join a wifi network"
-puts "3. Send a text message"
-puts
-puts "Press 4 to exit"
-puts
+while true
 
-kind_of_code = gets.chomp
-puts
-
-# Option 1: URL
-if kind_of_code=="1"
-  puts "What URL would you like to encode in a QR code?"
+  puts "What kind of QR code would you like to generate?"
   puts
-  url_name = gets.chomp
+  puts "1. Open a URL"
+  puts "2. Join a wifi network"
+  puts "3. Send a text message"
+  puts
+  puts "Press 4 to exit"
+  puts
 
-  # It's 2025. We only use https
-  if url_name.include?("http://")
-    url_name.gsub("http:","https:")
+  kind_of_code = gets.chomp
+  puts
+
+  # Option 1: URL
+  if kind_of_code=="1"
+    puts "What URL would you like to encode in a QR code?"
+    puts
+    url_name = gets.chomp
+
+    # It's 2025. We only use https
+    if url_name.include?("http://")
+      url_name.gsub("http:","https:")
+    end
+    # Need to add https to the url :)
+    if !url_name.include?("https://")
+      url_name = "https://" + url_name
+    end
+
+    qrcode(url_name)
+
+  # Make a WiFi network QR code
+  elsif kind_of_code=="2"
+    puts "What is the name of your WiFi network?"
+    puts 
+    network_name = gets.chomp
+    puts
+
+    puts "What is the password for your WiFi network?"
+    puts
+    network_password = gets.chomp
+    puts
+
+    # encode the name and password of the network
+    encode_text = "WIFI:T:WPA;S:#{network_name};P:#{network_password}"
+
+    # save the QR code
+    qrcode(encode_text)
+
+  # Send a text message
+  elsif kind_of_code=="3"
+
+    puts "What is the phone number you would like to text?"
+    puts 
+    cell = gets.chomp
+    puts
+
+    cell.gsub(" ","")
+
+    puts "What do you want to text them?"
+    puts
+    message = gets.chomp
+
+    # encode the name and password of the network
+    encode_text = "SMSTO:#{cell}:#{message}"
+
+    # save the QR code
+    qrcode(encode_text)
+
+  # Exit
+  elsif kind_of_code=="4"
+    pp "Understood. Please come back again soon!"
+
+    break
+
+  else
+    puts "Invalid input. Please try again."
+    puts
+
+    next
+
+  end 
+
+  puts "What else can I do for you?"
+  puts
+
   end
-  # Need to add https to the url :)
-  if !url_name.include?("https://")
-    url_name = "https://" + url_name
-  end
-  
-  qrcode(url_name)
-
-# Make a WiFi network QR code
-elsif kind_of_code=="2"
-  puts "What is the name of your WiFi network?"
-  puts 
-  network_name = gets.chomp
-  puts
-
-  puts "What is the password for your WiFi network?"
-  puts
-  network_password = gets.chomp
-  puts
-
-  # encode the name and password of the network
-  encode_text = "WIFI:T:WPA;S:#{network_name};P:#{network_password}"
-
-  # save the QR code
-  qrcode(encode_text)
-
-# Send a text message
-elsif kind_of_code=="3"
-
-  puts "What is the phone number you would like to text?"
-  puts 
-  cell = gets.chomp
-  puts
-
-  cell.gsub(" ","")
-
-  puts "What do you want to text them?"
-  puts
-  message = gets.chomp
-
-  # encode the name and password of the network
-  encode_text = "SMSTO:#{cell}:#{message}"
-
-  # save the QR code
-  qrcode(encode_text)
-
-# Exit
-elsif kind_of_code=="4"
-  pp "Understood. Please come back again soon!"
-
-else
-  puts "Invalid input. Please try again."
-
-end 
-
-puts "What else can I do for you?"
-puts
 
 pp "End of file. Exiting... "
