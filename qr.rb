@@ -117,4 +117,4 @@ while true
 
   end
 
-pp "End of file. Exiting... "
+pp "Goodbye! "
